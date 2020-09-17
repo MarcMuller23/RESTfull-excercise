@@ -1,87 +1,143 @@
 package fontys.sem3.service.repository;
 
-import fontys.sem3.service.model.Country;
-import fontys.sem3.service.model.Student;
+import fontys.sem3.service.model.Shelter;
+import fontys.sem3.service.model.Tiger;
+import fontys.sem3.service.model.Platypus;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FakeDataStore {
 
-    private final List<Country> countryList = new ArrayList<>();
-    private final List<Student> studentList = new ArrayList<>();
+    private final List<Tiger> tigerList = new ArrayList<>();
+    private final List<Platypus> platypusList = new ArrayList<>();
+    private final List<Shelter> shelterList = new ArrayList<>();
 
     public FakeDataStore() {
         // work this out better, add few more countries and students
-        Country netherlands = new Country("NL", "The Netherlands");
-        Country bulgaria = new Country("BG", "Bulgaria");
-        Country china = new Country("CHN", "China");
-        countryList.add(netherlands);
-        countryList.add(bulgaria);
-        countryList.add(china);
+        Shelter shelter1 = new Shelter("A1");
+        Shelter shelter2 = new Shelter("B1");
 
-        studentList.add(new Student(1, "Joe Smith",netherlands));
-        studentList.add(new Student(2, "Ann Johnsson", bulgaria));
-        studentList.add(new Student(3, "Ann Johnsson", bulgaria));
-        studentList.add(new Student(4, "Miranda Winslet", china));
+        shelterList.add(shelter1);
+        shelterList.add(shelter2);
+
+
+        Tiger tiger1 = new Tiger(1, "Bilal", "Male", shelter1);
+        Tiger tiger2 = new Tiger(2, "Wahid", "Female", shelter1);
+        tigerList.add(tiger1);
+        tigerList.add(tiger2);
+
+
+        platypusList.add(new Platypus(3, "Perry", "Male", shelter2));
+        platypusList.add(new Platypus(4, "Ferry", "Female", shelter2));
+        platypusList.add(new Platypus(5, "Kurrr-sat", "Male", shelter2));
+
+
     }
 
-    public List<Student> getStudents() {
-        return studentList;
+    public List<Platypus> getPlatypus() {
+        return platypusList;
     }
 
-    public List<Student> getStudents(Country country) {
-        List<Student> filetered = new ArrayList<>();
-        for (Student student : studentList) {
-            if (student.getCountry().equals(country)) {
-                filetered.add(student);
+    public List<Platypus> getPlatypuses(int animalNumber) {
+        if (animalNumber == 0) {
+            return platypusList;
+        }
+        else {
+            for (Platypus platypus : platypusList) {
+                if (platypus.getAnimalNumber() == animalNumber) {
+                    return platypusList;
+                }
             }
         }
-        return filetered;
+        return null;
     }
-
-    public Student getStudent(int nr) {
-        for (Student student : studentList) {
-            if (student.getStudentNumber() == nr)
-                return student;
+    public List<Tiger> getTigers(int animalNumber) {
+        if (animalNumber == 0) {
+            return tigerList;
+        }
+        else {
+            for (Tiger tiger : tigerList) {
+                if (tiger.getAnimalNumber() == animalNumber) {
+                    return tigerList;
+                }
+            }
         }
         return null;
     }
 
-    public boolean deleteStudent(int stNr) {
-        Student student = getStudent(stNr);
-        if (student == null){
+    public Platypus getPlatypus(int animalNumber) {
+        for (Platypus platypus : platypusList) {
+            if (platypus.getAnimalNumber() == animalNumber)
+                return platypus;
+        }
+        return null;
+    }
+
+    public Tiger getTiger(int animalNumber) {
+        for (Tiger tiger : tigerList) {
+            if (tiger.getAnimalNumber() == animalNumber)
+                return tiger;
+        }
+        return null;
+    }
+
+    public boolean deletePlatypus(int animalNumber) {
+        Platypus platypus = getPlatypus(animalNumber);
+        if (platypus == null){
             return false;
         }
 
-        return studentList.remove(student);
+        return platypusList.remove(platypus);
     }
 
+    public boolean deleteTiger(int animalNumber) {
+        Tiger tiger = getTiger(animalNumber);
+        if (tiger == null){
+            return false;
+        }
 
-    public boolean add(Student student) {
-        if (this.getStudent(student.getStudentNumber()) != null){
+        return platypusList.remove(tiger);
+    }
+
+    public boolean addPlatypus(Platypus platypus) {
+        if (this.getPlatypus(platypus.getAnimalNumber()) != null){
                return false;
         }
-        studentList.add(student);
+        platypusList.add(platypus);
         return true;
     }
 
-    public boolean update(Student student) {
-        Student old = this.getStudent(student.getStudentNumber());
+    public boolean addTiger(Tiger tiger) {
+        if (this.getPlatypus(tiger.getAnimalNumber()) != null){
+            return false;
+        }
+        tigerList.add(tiger);
+        return true;
+    }
+
+    public boolean updatePlatypus(Platypus platypus) {
+        Platypus old = this.getPlatypus(platypus.getAnimalNumber());
         if (old == null) {
             return false;
         }
-        old.setName(student.getName());
-        old.setCountry(student.getCountry());
+        old.setName(platypus.getName());
+        old.setGender(platypus.getGender());
+        old.setAnimalNumber(platypus.getAnimalNumber());
+        old.setShelter(platypus.getShelter());
+        return true;
+    }
+    public boolean updateTiger(Tiger tiger) {
+        Tiger old = this.getTiger(tiger.getAnimalNumber());
+        if (old == null) {
+            return false;
+        }
+        old.setName(tiger.getName());
+        old.setGender(tiger.getGender());
+        old.setAnimalNumber(tiger.getAnimalNumber());
+        old.setShelter(tiger.getShelter());
         return true;
     }
 
-    public Country getCountry(String countryCode) {
-        for (Country country : countryList) {
-            if (country.getCode().equals(countryCode)) {
-                return country;
-            }
-        }
-        return null;
-    }
+
 }
